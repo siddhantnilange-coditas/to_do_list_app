@@ -1,0 +1,129 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:todo_list_app/core/colors/colors.dart';
+import 'package:todo_list_app/features/home/data/datasources/model.dart';
+import 'package:todo_list_app/features/home/data/datasources/entity.dart';
+import 'package:todo_list_app/features/home/presentation/widgets/calender.dart';
+
+
+Future<void> showCategorySelectionDialog(BuildContext context) async {
+  // final List<TaskCategory> categories = TaskCategory.values;
+  final List<CategoryListModel> categories = CategoryManager().categories;
+
+  return showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        titleTextStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+        titlePadding: EdgeInsets.only(top: 5, bottom: 20),
+        insetPadding: EdgeInsets.all(1),
+        contentPadding: EdgeInsets.only(left: 8, right: 8, bottom: 5),
+        actionsPadding: EdgeInsets.only(bottom: 13),
+        actionsAlignment: MainAxisAlignment.center,
+
+//  actionsOverflowDirection,
+//  actionsOverflowButtonSpacing,
+        // buttonPadding: EdgeInsets.all(60),
+        // contentPadding: EdgeInsets.only(left: 11, right: 11, top: 0),
+
+        // insetPadding: EdgeInsets.all(10),
+        shape: BeveledRectangleBorder(borderRadius: BorderRadius.circular(0)),
+        backgroundColor: customBalackColor,
+        title: const Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: 10,
+              ),
+              child: Text(
+                'Choose Category',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            Divider(
+              indent: 10,
+              endIndent: 10.0,
+              color: Colors.white,
+              height: 1,
+            ),
+          ],
+        ),
+
+        content: Container(
+          // padding: EdgeInsets.all(0),
+          // margin: EdgeInsets.all(0),
+          width: 350,
+          height: 500,
+          child: GridView.count(
+            // childAspectRatio: MediaQuery.of(context).size.width /
+            //   (MediaQuery.of(context).size.height / 1.2),
+            shrinkWrap: true,
+            padding: EdgeInsets.only(top: 0, left: 8, right: 8),
+
+            crossAxisCount: 3,
+            mainAxisSpacing: 45,
+            crossAxisSpacing: 60,
+            children: List.generate(
+              categories.length,
+              (index) => Wrap(
+                children: [
+                  Column(
+                    children: [
+                      Container(
+                        // color: Colors.white,
+                        // width: 80,
+                        // height: 75,
+
+                        alignment: Alignment.center,
+                        child: SvgPicture.asset(
+                          categories[index].svgPath,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        categories[index].title,
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: whiteTextColor,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              // print('Button pressed');
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: buttonsColorPurple,
+              padding: EdgeInsets.symmetric(horizontal: 110, vertical: 18),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4), // No border radius
+              ), // Set custom padding
+            ),
+            child: Text(
+              'Add Category',
+              style: TextStyle(fontSize: 16, color: whiteTextColor),
+            ),
+          ),
+          // TextButton(
+          //   onPressed: () {
+          //     Navigator.of(context).pop(); // Close the dialog
+          //   },
+          //   child: Text('Cancel'),
+          // ),
+        ],
+      );
+    },
+  );
+}
